@@ -158,7 +158,7 @@ createBuckets() {
 # createBuckets BUCKET1 [BUCKET2 ..]
     for bucketname in "${@}"; do
         echo "Checking if ${bucketname} exists"
-        err=$(aws s3 ls "s3://${bucketname}")
+        err=$(aws s3 ls "s3://${bucketname}" 2>&1)
         if [ $? -eq 255 ]; then
 
             # Did command fail because bucket does not exist?
