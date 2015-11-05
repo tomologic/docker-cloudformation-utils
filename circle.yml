@@ -7,12 +7,14 @@ machine:
 
 dependencies:
   pre:
-    - sudo apt-get update; sudo apt-get install shellcheck
     - pip install -r requirements-test.txt
     - docker build -t tomologic/cloudformation-utils .
 
 test:
   override:
     - flake8 --show-source --max-line-length=120 *.py
-    - shellcheck *.sh
+# Test bash code in docker because CircleCI's old Ubuntu version
+# doesn't have shellcheck in apt
+    - docker run -v $PWD:/code -w /code tomologic/shellcheck *.sh
+# Check that the wrapper script works
     - docker run tomologic/cloudformation-utils rotateCursor 1
