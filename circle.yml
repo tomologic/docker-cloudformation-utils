@@ -1,0 +1,18 @@
+# vim: softtabstop=2 shiftwidth=2 expandtab
+machine:
+  services:
+    - docker
+  python:
+    version: 3.4.3
+
+dependencies:
+  pre:
+    - sudo apt-get update; sudo apt-get install shellcheck
+    - pip install -r requirements-test.txt
+    - docker build -t tomologic/cloudformation-utils .
+
+test:
+  override:
+    - flake8 --show-source --max-line-length=120 *.py
+    - shellcheck *.sh
+    - docker run tomologic/cloudformation-utils rotateCursor 1
