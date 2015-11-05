@@ -17,7 +17,7 @@ createStack() {
     aws cloudformation create-stack \
         --stack-name "$1" \
         --template-body "file://$2" \
-        --cli-input-json "$3"
+        --cli-input-json "file://$3"
 }
 
 updateStack() {
@@ -25,7 +25,7 @@ updateStack() {
     aws cloudformation update-stack \
         --stack-name "$1" \
         --template-body "file://$2" \
-        --cli-input-json "$3"
+        --cli-input-json "file://$3"
 }
 
 deleteStack() {
