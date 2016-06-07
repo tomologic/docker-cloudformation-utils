@@ -17,12 +17,16 @@ if __name__ == "__main__":
 
     # Parse the defined arguments, leave the rest alone
     args, unknown_args = partial_parser.parse_known_args()
+    logger.debug(unknown_args)
 
     parameter_parser = argparse.ArgumentParser(add_help=False)
     # Optimistically add every '--flag' as an argument with one mandatory string value
     for arg in unknown_args:
         if arg.startswith('--'):
-            parameter_parser.add_argument(arg)
+            # Only treat characters before equals sign as flag name
+            # Turns --flag=value into --flag
+            clean_arg = arg.split('=')[0]
+            parameter_parser.add_argument(clean_arg)
     # __dict__ hack because the default Namespace does not allow iteration
     parameters_dict = parameter_parser.parse_args(unknown_args).__dict__
 
