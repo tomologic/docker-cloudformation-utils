@@ -34,9 +34,9 @@ if __name__ == "__main__":
     for key in parameters_dict:
         value = parameters_dict[key]
         if args.action == 'update' and value == USE_PREVIOUS_VALUE:
-            output_parameters.append({"ParameterKey": key,  "UsePreviousValue": True})
+            output_parameters.append({"ParameterKey": key, "UsePreviousValue": True})
         else:
-            output_parameters.append({"ParameterKey": key,  "ParameterValue": value})
+            output_parameters.append({"ParameterKey": key, "ParameterValue": value})
 
     output_capabilities = []
     if args.iam:

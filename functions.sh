@@ -162,8 +162,7 @@ createBuckets() {
         if [ $? -eq 255 ]; then
 
             # Did command fail because bucket does not exist?
-            echo "${err}" | grep NoSuchBucket &>/dev/null
-            if [ $? -eq 0 ]; then
+            if echo "${err}" | grep NoSuchBucket &>/dev/null; then
                 echo "No such bucket. Attempting to create."
                 aws s3 mb s3://"${bucketname}"
                 # Save aws cli return code for later
@@ -171,7 +170,7 @@ createBuckets() {
                 if [ $returncode -eq 0 ]; then
                     echo "Bucket created"
                     # Save created buckets for potential rollback
-                    createdbuckets+=(${bucketname})
+                    createdbuckets+=("${bucketname}")
                 else
                     echo "Failed to create bucket."
                     # Rollback: delete recently created buckets
@@ -181,8 +180,7 @@ createBuckets() {
             fi
 
             # Did command fail because access was denied?
-            echo "${err}" | grep AccessDenied &>/dev/null
-            if [ $? -eq 0 ]; then
+            if echo "${err}" | grep AccessDenied &>/dev/null; then
                 >&2 echo "Access denied to bucket"
                 deleteBuckets "${createdbuckets[@]}"
                 exit 1
